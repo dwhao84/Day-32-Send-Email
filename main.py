@@ -5,8 +5,6 @@ from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from mail import my_email, my_password, yahoo_address, yahoo_password
 
-# 哈哈，來試第一次 pull request
-# 哈哈，來試第二次 pull request
 
 # 創建郵件訊息
 msg = MIMEMultipart()

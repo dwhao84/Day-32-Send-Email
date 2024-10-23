@@ -1,28 +1,33 @@
-from _datetime import datetime as dt
+import smtplib
+from email.mime.text import MIMEText
 from random import randint
 import linecache
+from email.mime.multipart import MIMEMultipart
+from mail import yahoo_address, my_email, yahoo_password
 
-"""
-Objective: Send a motivational quote via email on the current weekday.
-
-Hints:
-1. Use the datetime module to obtain the current day of the week.
-2. Open the quotes.txt file and obtain a list of quotes.
-3. Use the random module to pick a random quote from your list of quotes.
-4. Use the matplotlib to send the email to yourself.
-"""
-
-current_time = dt.now() # 2024/10/23
-
+# 取得隨機名言
 random_num = randint(1, 102)
-
 QUOTES = "quotes.txt"
 random_quotes = linecache.getline(QUOTES, random_num)
 print(random_quotes)
 
-# Create SMTP(Simple Mail Transfer Protocol)
-# https://www.geeksforgeeks.org/send-mail-attachment-gmail-account-using-python/
+# 設定郵件
+msg = MIMEMultipart()
+msg['From'] = yahoo_address
+msg['To'] = my_email
+msg['Subject'] = "Today's Quote"
+msg.attach(MIMEText(random_quotes, 'plain'))
 
+# 發送郵件
+try:
+    connection = smtplib.SMTP("smtp.mail.yahoo.com", 587)
+    connection.starttls()
+    connection.login(user=yahoo_address, password=yahoo_password)
+    connection.send_message(msg)
+    print("Mail Success！")
+    
+    connection.quit()
+    print("Quit")
 
-
-
+except Exception as e:
+    print(f"發生錯誤：{e}")
